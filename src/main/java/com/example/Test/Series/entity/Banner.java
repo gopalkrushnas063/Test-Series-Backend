@@ -17,4 +17,7 @@ public class Banner {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String bannerImage;
+    private String title;
+    private String subTitle;
+    private String url;
 }

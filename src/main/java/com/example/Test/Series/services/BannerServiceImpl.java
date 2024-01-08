@@ -36,6 +36,9 @@ public class BannerServiceImpl implements BannerServices{
     public Banner updateBannerByID(Integer id, Banner banner) throws BannerException {
         Banner existingBanner = bannerRepository.findById(id).get();
         existingBanner.setBannerImage(banner.getBannerImage());
+        existingBanner.setTitle(banner.getTitle());
+        existingBanner.setSubTitle(banner.getSubTitle());
+        existingBanner.setUrl(banner.getUrl());
 
         return bannerRepository.save(existingBanner);
 
