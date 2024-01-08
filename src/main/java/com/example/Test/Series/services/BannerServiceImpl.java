@@ -41,7 +41,6 @@ public class BannerServiceImpl implements BannerServices{
         existingBanner.setUrl(banner.getUrl());
 
         return bannerRepository.save(existingBanner);
-
     }
 
     @Override
