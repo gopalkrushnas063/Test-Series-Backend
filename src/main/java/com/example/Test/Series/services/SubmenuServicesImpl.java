@@ -29,7 +29,7 @@ public class SubmenuServicesImpl implements SubmenuServices {
     }
 
     @Override
-    public Submenu getSubmenuById(Long id) throws MenuException {
+    public Submenu getSubmenuById(Integer id) throws MenuException {
         try {
             Optional<Submenu> optionalSubmenu = submenuRepository.findById(id);
             if (optionalSubmenu.isPresent()) {
@@ -52,14 +52,13 @@ public class SubmenuServicesImpl implements SubmenuServices {
     }
 
     @Override
-    public Submenu updateSubmenu(Long id, Submenu submenu) throws MenuException {
+    public Submenu updateSubmenu(Integer id, Submenu submenu) throws MenuException {
         try {
             Optional<Submenu> optionalSubmenu = submenuRepository.findById(id);
             if (optionalSubmenu.isPresent()) {
                 Submenu existingSubmenu = optionalSubmenu.get();
                 existingSubmenu.setSubmenu(submenu.getSubmenu());
                 existingSubmenu.setPath(submenu.getPath());
-                existingSubmenu.setMenu(submenu.getMenu()); // Updated from navbar to menu
                 return submenuRepository.save(existingSubmenu);
             } else {
                 throw new MenuException("Submenu not found with id: " + id);
@@ -70,7 +69,7 @@ public class SubmenuServicesImpl implements SubmenuServices {
     }
 
     @Override
-    public void deleteSubmenu(Long id) throws MenuException {
+    public void deleteSubmenu(Integer id) throws MenuException {
         try {
             submenuRepository.deleteById(id);
         } catch (Exception e) {

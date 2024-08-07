@@ -29,7 +29,7 @@ public class MenuServicesImpl implements MenuServices {
     }
 
     @Override
-    public Menu getMenuById(Long id) throws MenuException {
+    public Menu getMenuById(Integer id) throws MenuException {
         try {
             Optional<Menu> optionalMenu = menuRepository.findById(id);
             if (optionalMenu.isPresent()) {
@@ -52,7 +52,7 @@ public class MenuServicesImpl implements MenuServices {
     }
 
     @Override
-    public Menu updateMenu(Long id, Menu menu) throws MenuException {
+    public Menu updateMenu(Integer id, Menu menu) throws MenuException {
         try {
             Optional<Menu> optionalMenu = menuRepository.findById(id);
             if (optionalMenu.isPresent()) {
@@ -69,7 +69,7 @@ public class MenuServicesImpl implements MenuServices {
     }
 
     @Override
-    public void deleteMenu(Long id) throws MenuException {
+    public void deleteMenu(Integer id) throws MenuException {
         try {
             menuRepository.deleteById(id);
         } catch (Exception e) {

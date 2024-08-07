@@ -11,42 +11,39 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/menus") // Changed endpoint to /menus for consistency
+@RequestMapping("/menus")
 public class MenuController {
-    private final MenuServices menuServices;
 
     @Autowired
-    public MenuController(MenuServices menuServices) {
-        this.menuServices = menuServices;
-    }
+    private MenuServices menuService;
 
     @GetMapping
     public ResponseEntity<List<Menu>> getAllMenus() throws MenuException {
-        List<Menu> menus = menuServices.getAllMenus();
+        List<Menu> menus = menuService.getAllMenus();
         return ResponseEntity.ok(menus);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Menu> getMenuById(@PathVariable Long id) throws MenuException {
-        Menu menu = menuServices.getMenuById(id);
+    public ResponseEntity<Menu> getMenuById(@PathVariable Integer id) throws MenuException {
+        Menu menu = menuService.getMenuById(id);
         return ResponseEntity.ok(menu);
     }
 
     @PostMapping
     public ResponseEntity<Menu> createMenu(@RequestBody Menu menu) throws MenuException {
-        Menu createdMenu = menuServices.createMenu(menu);
+        Menu createdMenu = menuService.createMenu(menu);
         return ResponseEntity.ok(createdMenu);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Menu> updateMenu(@PathVariable Long id, @RequestBody Menu menu) throws MenuException {
-        Menu updatedMenu = menuServices.updateMenu(id, menu);
+    public ResponseEntity<Menu> updateMenu(@PathVariable Integer id, @RequestBody Menu menu) throws MenuException {
+        Menu updatedMenu = menuService.updateMenu(id, menu);
         return ResponseEntity.ok(updatedMenu);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMenu(@PathVariable Long id) throws MenuException {
-        menuServices.deleteMenu(id);
+    public ResponseEntity<Void> deleteMenu(@PathVariable Integer id) throws MenuException {
+        menuService.deleteMenu(id);
         return ResponseEntity.noContent().build();
     }
 }

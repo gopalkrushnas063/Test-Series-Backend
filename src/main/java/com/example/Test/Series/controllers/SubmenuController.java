@@ -11,42 +11,39 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/submenus") // Changed endpoint to /submenus for clarity
+@RequestMapping("/submenus")
 public class SubmenuController {
-    private final SubmenuServices submenuServices;
 
     @Autowired
-    public SubmenuController(SubmenuServices submenuServices) {
-        this.submenuServices = submenuServices;
-    }
+    private SubmenuServices submenuService;
 
     @GetMapping
     public ResponseEntity<List<Submenu>> getAllSubmenus() throws MenuException {
-        List<Submenu> submenus = submenuServices.getAllSubmenus();
+        List<Submenu> submenus = submenuService.getAllSubmenus();
         return ResponseEntity.ok(submenus);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Submenu> getSubmenuById(@PathVariable Long id) throws MenuException {
-        Submenu submenu = submenuServices.getSubmenuById(id);
+    public ResponseEntity<Submenu> getSubmenuById(@PathVariable Integer id) throws MenuException {
+        Submenu submenu = submenuService.getSubmenuById(id);
         return ResponseEntity.ok(submenu);
     }
 
     @PostMapping
     public ResponseEntity<Submenu> createSubmenu(@RequestBody Submenu submenu) throws MenuException {
-        Submenu createdSubmenu = submenuServices.createSubmenu(submenu);
+        Submenu createdSubmenu = submenuService.createSubmenu(submenu);
         return ResponseEntity.ok(createdSubmenu);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Submenu> updateSubmenu(@PathVariable Long id, @RequestBody Submenu submenu) throws MenuException {
-        Submenu updatedSubmenu = submenuServices.updateSubmenu(id, submenu);
+    public ResponseEntity<Submenu> updateSubmenu(@PathVariable Integer id, @RequestBody Submenu submenu) throws MenuException {
+        Submenu updatedSubmenu = submenuService.updateSubmenu(id, submenu);
         return ResponseEntity.ok(updatedSubmenu);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSubmenu(@PathVariable Long id) throws MenuException {
-        submenuServices.deleteSubmenu(id);
+    public ResponseEntity<Void> deleteSubmenu(@PathVariable Integer id) throws MenuException {
+        submenuService.deleteSubmenu(id);
         return ResponseEntity.noContent().build();
     }
 }

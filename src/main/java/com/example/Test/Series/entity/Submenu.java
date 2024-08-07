@@ -1,23 +1,29 @@
 package com.example.Test.Series.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 @Entity
 public class Submenu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Changed to Long
+    private Integer id;
 
     private String submenu;
     private String path;
 
     @ManyToOne
     @JoinColumn(name = "menu_id")
-    private Menu menu; // Renamed from Navbar to Menu
+    @JsonBackReference
+    private Menu menu;
+
+    // Getters and setters
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+    public String getSubmenu() { return submenu; }
+    public void setSubmenu(String submenu) { this.submenu = submenu; }
+    public String getPath() { return path; }
+    public void setPath(String path) { this.path = path; }
+    public Menu getMenu() { return menu; }
+    public void setMenu(Menu menu) { this.menu = menu; }
 }
