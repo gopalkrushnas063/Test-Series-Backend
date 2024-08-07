@@ -1,7 +1,7 @@
 package com.example.Test.Series.controllers;
 
 import com.example.Test.Series.entity.Submenu;
-import com.example.Test.Series.exceptions.NavbarException;
+import com.example.Test.Series.exceptions.MenuException;
 import com.example.Test.Series.services.SubmenuServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,45 +11,41 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/submenu")
+@RequestMapping("/submenus") // Changed endpoint to /submenus for clarity
 public class SubmenuController {
+    private final SubmenuServices submenuServices;
+
     @Autowired
-    private SubmenuServices submenuServices;
+    public SubmenuController(SubmenuServices submenuServices) {
+        this.submenuServices = submenuServices;
+    }
 
     @GetMapping
-    public ResponseEntity<List<Submenu>> getAllSubmenus() throws NavbarException {
+    public ResponseEntity<List<Submenu>> getAllSubmenus() throws MenuException {
         List<Submenu> submenus = submenuServices.getAllSubmenus();
         return ResponseEntity.ok(submenus);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Submenu> getSubmenuById(@PathVariable Integer id) throws NavbarException {
+    public ResponseEntity<Submenu> getSubmenuById(@PathVariable Long id) throws MenuException {
         Submenu submenu = submenuServices.getSubmenuById(id);
-        if (submenu != null) {
-            return ResponseEntity.ok(submenu);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(submenu);
     }
 
     @PostMapping
-    public ResponseEntity<Submenu> createSubmenu(@RequestBody Submenu submenu) throws NavbarException {
+    public ResponseEntity<Submenu> createSubmenu(@RequestBody Submenu submenu) throws MenuException {
         Submenu createdSubmenu = submenuServices.createSubmenu(submenu);
         return ResponseEntity.ok(createdSubmenu);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Submenu> updateSubmenu(@PathVariable Integer id, @RequestBody Submenu submenu) throws NavbarException {
+    public ResponseEntity<Submenu> updateSubmenu(@PathVariable Long id, @RequestBody Submenu submenu) throws MenuException {
         Submenu updatedSubmenu = submenuServices.updateSubmenu(id, submenu);
-        if (updatedSubmenu != null) {
-            return ResponseEntity.ok(updatedSubmenu);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(updatedSubmenu);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSubmenu(@PathVariable Integer id) throws NavbarException {
+    public ResponseEntity<Void> deleteSubmenu(@PathVariable Long id) throws MenuException {
         submenuServices.deleteSubmenu(id);
         return ResponseEntity.noContent().build();
     }

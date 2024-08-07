@@ -1,9 +1,8 @@
 package com.example.Test.Series.services;
 
 import com.example.Test.Series.entity.Submenu;
-import com.example.Test.Series.exceptions.NavbarException;
+import com.example.Test.Series.exceptions.MenuException;
 import com.example.Test.Series.repositories.SubmenuRepository;
-import com.example.Test.Series.services.SubmenuServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,61 +20,61 @@ public class SubmenuServicesImpl implements SubmenuServices {
     }
 
     @Override
-    public List<Submenu> getAllSubmenus() throws NavbarException {
+    public List<Submenu> getAllSubmenus() throws MenuException {
         try {
             return submenuRepository.findAll();
         } catch (Exception e) {
-            throw new NavbarException("Error fetching submenus");
+            throw new MenuException("Error fetching submenus");
         }
     }
 
     @Override
-    public Submenu getSubmenuById(Integer id) throws NavbarException {
+    public Submenu getSubmenuById(Long id) throws MenuException {
         try {
             Optional<Submenu> optionalSubmenu = submenuRepository.findById(id);
             if (optionalSubmenu.isPresent()) {
                 return optionalSubmenu.get();
             } else {
-                throw new NavbarException("Submenu not found with id: " + id);
+                throw new MenuException("Submenu not found with id: " + id);
             }
         } catch (Exception e) {
-            throw new NavbarException("Error fetching submenu by id: " + id);
+            throw new MenuException("Error fetching submenu by id: " + id);
         }
     }
 
     @Override
-    public Submenu createSubmenu(Submenu submenu) throws NavbarException {
+    public Submenu createSubmenu(Submenu submenu) throws MenuException {
         try {
             return submenuRepository.save(submenu);
         } catch (Exception e) {
-            throw new NavbarException("Error creating submenu");
+            throw new MenuException("Error creating submenu");
         }
     }
 
     @Override
-    public Submenu updateSubmenu(Integer id, Submenu submenu) throws NavbarException {
+    public Submenu updateSubmenu(Long id, Submenu submenu) throws MenuException {
         try {
             Optional<Submenu> optionalSubmenu = submenuRepository.findById(id);
             if (optionalSubmenu.isPresent()) {
                 Submenu existingSubmenu = optionalSubmenu.get();
                 existingSubmenu.setSubmenu(submenu.getSubmenu());
                 existingSubmenu.setPath(submenu.getPath());
-                existingSubmenu.setNavbar(submenu.getNavbar());
+                existingSubmenu.setMenu(submenu.getMenu()); // Updated from navbar to menu
                 return submenuRepository.save(existingSubmenu);
             } else {
-                throw new NavbarException("Submenu not found with id: " + id);
+                throw new MenuException("Submenu not found with id: " + id);
             }
         } catch (Exception e) {
-            throw new NavbarException("Error updating submenu");
+            throw new MenuException("Error updating submenu");
         }
     }
 
     @Override
-    public void deleteSubmenu(Integer id) throws NavbarException {
+    public void deleteSubmenu(Long id) throws MenuException {
         try {
             submenuRepository.deleteById(id);
         } catch (Exception e) {
-            throw new NavbarException("Error deleting submenu");
+            throw new MenuException("Error deleting submenu");
         }
     }
 }

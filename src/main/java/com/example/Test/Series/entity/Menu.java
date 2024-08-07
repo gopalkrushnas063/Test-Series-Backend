@@ -5,19 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-public class Submenu {
+public class Menu { // Renamed from Navbar to Menu
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Changed to Long
 
-    private String submenu;
-    private String path;
+    private String menu;
 
-    @ManyToOne
-    @JoinColumn(name = "menu_id")
-    private Menu menu; // Renamed from Navbar to Menu
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Submenu> submenus;
 }
