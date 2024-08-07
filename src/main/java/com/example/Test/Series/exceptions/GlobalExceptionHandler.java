@@ -23,6 +23,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(NavbarException.class)
+    public ResponseEntity<MyErrorDetails> NavbarExceptionHandler(NavbarException exp, WebRequest req){
+        MyErrorDetails err = new MyErrorDetails(LocalDateTime.now(), exp.getMessage(), req.getDescription(false));
+        return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(ExamCardExceptions.class)
     public ResponseEntity<MyErrorDetails> ExamCardExceptionHandler(ExamCardExceptions exp, WebRequest req){
         MyErrorDetails err = new MyErrorDetails(LocalDateTime.now(), exp.getMessage(), req.getDescription(false));
