@@ -15,7 +15,8 @@ public class Banner {
     private Integer id;
 
     @Lob
-    private byte[] bannerImage; // Store the image as a byte array
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] bannerImage;
 
     private String title;
     private String subTitle;
