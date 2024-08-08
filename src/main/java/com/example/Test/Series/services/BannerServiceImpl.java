@@ -5,25 +5,20 @@ import com.example.Test.Series.exceptions.BannerException;
 import com.example.Test.Series.repositories.BannerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
-public class BannerServiceImpl implements BannerServices {
+public class BannerServiceImpl implements BannerServices{
 
     @Autowired
     private BannerRepository bannerRepository;
 
+
     @Override
-    public Banner registerNewBanner(MultipartFile bannerImage, String title, String subTitle, String url) throws BannerException, IOException {
-        Banner banner = new Banner();
-        banner.setBannerImage(bannerImage.getBytes());
-        banner.setTitle(title);
-        banner.setSubTitle(subTitle);
-        banner.setUrl(url);
+    public Banner registerNewBanner(Banner banner) throws BannerException {
         return bannerRepository.save(banner);
     }
 
@@ -31,19 +26,20 @@ public class BannerServiceImpl implements BannerServices {
     public List<Banner> getAllBanner() throws BannerException {
         List<Banner> bannerList = bannerRepository.findAll();
 
-        if (bannerList.isEmpty()) {
-            throw new BannerException("No any record found");
+        if(bannerList.isEmpty()){
+            throw new BannerException("No any record founds");
         }
         return bannerList;
     }
 
     @Override
-    public Banner updateBannerByID(Integer id, MultipartFile bannerImage, String title, String subTitle, String url) throws BannerException, IOException {
-        Banner existingBanner = bannerRepository.findById(id).orElseThrow(() -> new BannerException("Banner does not exist with ID: " + id));
-        existingBanner.setBannerImage(bannerImage.getBytes());
-        existingBanner.setTitle(title);
-        existingBanner.setSubTitle(subTitle);
-        existingBanner.setUrl(url);
+    public Banner updateBannerByID(Integer id, Banner banner) throws BannerException {
+        Banner existingBanner = bannerRepository.findById(id).get();
+        existingBanner.setBannerImage(banner.getBannerImage());
+        existingBanner.setTitle(banner.getTitle());
+        existingBanner.setSubTitle(banner.getSubTitle());
+        existingBanner.setUrl(banner.getUrl());
+
         return bannerRepository.save(existingBanner);
     }
 
@@ -51,20 +47,22 @@ public class BannerServiceImpl implements BannerServices {
     public String deleteBannerByID(Integer id) throws BannerException {
         Optional<Banner> existingBanner = bannerRepository.findById(id);
 
-        if (existingBanner.isPresent()) {
+        if(existingBanner.isPresent()){
             bannerRepository.deleteById(id);
             return "Banner Data Deleted Successfully";
         }
-        throw new BannerException("Banner does not exist with Banner ID : " + id);
+        throw new BannerException("Banner does not exist with Banner ID : "+id);
+
     }
 
     @Override
     public Banner getBannerByID(Integer id) throws BannerException {
         Optional<Banner> banner = bannerRepository.findById(id);
 
-        if (banner.isPresent()) {
+        if(banner.isPresent()){
             return banner.get();
         }
-        throw new BannerException("Banner does not exist with Banner ID : " + id);
+        throw new BannerException("Banner does not exist with Banner ID : "+id);
+
     }
 }
