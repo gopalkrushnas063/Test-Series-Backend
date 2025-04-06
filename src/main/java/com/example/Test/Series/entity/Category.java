@@ -1,24 +1,21 @@
 package com.example.Test.Series.entity;
 
-
-
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-public class Exam {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String image;
-    private String title;
-    private String path;
-
-    @ElementCollection
-    private List<DataList> dataList;
+    private String catNames;
+    private String catColors;
+    private String catIcons;
 }
