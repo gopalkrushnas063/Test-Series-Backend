@@ -16,4 +16,8 @@ public class ExamTest {
     private String image;
     private String title;
     private String subTitle;
+
+    @ManyToOne
+    @JoinColumn(name = "exam_card_id")
+    private ExamsCard examsCard;
 }
