@@ -45,4 +45,34 @@ public class ExamTestController {
         List<Question> questions = examTestService.getQuestionsByExamTestId(examTestId);
         return new ResponseEntity<>(questions, HttpStatus.OK);
     }
+
+    @PutMapping("/update/{examTestId}")
+    public ResponseEntity<ExamTest> updateExamTest(
+            @PathVariable Integer examTestId,
+            @RequestBody ExamTest examTest) throws ExamTestException {
+        ExamTest updatedExamTest = examTestService.updateExamTest(examTestId, examTest);
+        return new ResponseEntity<>(updatedExamTest, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{examTestId}")
+    public ResponseEntity<String> deleteExamTest(
+            @PathVariable Integer examTestId) throws ExamTestException {
+        String message = examTestService.deleteExamTest(examTestId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PutMapping("/questions/update/{questionId}")
+    public ResponseEntity<Question> updateQuestion(
+            @PathVariable Integer questionId,
+            @RequestBody Question question) throws ExamTestException {
+        Question updatedQuestion = examTestService.updateQuestion(questionId, question);
+        return new ResponseEntity<>(updatedQuestion, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/questions/delete/{questionId}")
+    public ResponseEntity<String> deleteQuestion(
+            @PathVariable Integer questionId) throws ExamTestException {
+        String message = examTestService.deleteQuestion(questionId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
