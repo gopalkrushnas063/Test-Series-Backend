@@ -1,13 +1,12 @@
 package com.example.Test.Series.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +19,7 @@ public class ExamsCard {
     private String icon;
     private String title;
     private String url;
+
+    @OneToMany(mappedBy = "examsCard", cascade = CascadeType.ALL)
+    private List<ExamTest> examTests;
 }
