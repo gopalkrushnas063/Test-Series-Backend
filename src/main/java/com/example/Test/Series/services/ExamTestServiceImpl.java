@@ -63,6 +63,16 @@ public class ExamTestServiceImpl implements ExamTestService {
 
         ExamTest existingExamTest = existingExamTestOpt.get();
         existingExamTest.setTitle(examTest.getTitle());
+        existingExamTest.setSubTitle(examTest.getSubTitle());
+        existingExamTest.setImage(examTest.getImage());
+
+        // Update examsCard if needed
+        if(examTest.getExamsCard() != null) {
+            existingExamTest.getExamsCard().setTitle(examTest.getExamsCard().getTitle());
+            existingExamTest.getExamsCard().setIcon(examTest.getExamsCard().getIcon());
+            existingExamTest.getExamsCard().setUrl(examTest.getExamsCard().getUrl());
+        }
+
         return examTestRepository.save(existingExamTest);
     }
 
