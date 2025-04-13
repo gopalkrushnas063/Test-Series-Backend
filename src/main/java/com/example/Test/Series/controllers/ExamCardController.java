@@ -1,11 +1,8 @@
 package com.example.Test.Series.controllers;
 
-import com.example.Test.Series.entity.ExamTest;
 import com.example.Test.Series.entity.ExamsCard;
 import com.example.Test.Series.exceptions.ExamCardExceptions;
-import com.example.Test.Series.exceptions.ExamTestException;
 import com.example.Test.Series.services.ExamRepositoryServices;
-import com.example.Test.Series.services.ExamTestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,21 +18,9 @@ public class ExamCardController {
     @Autowired
     private ExamRepositoryServices examRepositoryServices;
 
-    @Autowired
-    private ExamTestService examTestService;
-
     @PostMapping("/add_exam_card")
-    public ResponseEntity<ExamsCard> addNewExamCardHandler(@RequestBody ExamsCard examsCard)
-            throws ExamCardExceptions, ExamTestException {
-
+    public ResponseEntity<ExamsCard> addNewExamCardHandler(@RequestBody ExamsCard examsCard) throws ExamCardExceptions {
         ExamsCard examsCard1 = examRepositoryServices.addExamCard(examsCard);
-
-        // Automatically create ExamTest
-        ExamTest examTest = new ExamTest();
-        examTest.setExamsCard(examsCard1);
-        examTest.setTitle("Default Test for " + examsCard1.getTitle());
-        examTestService.createExamTest(examTest);
-
         return new ResponseEntity<>(examsCard1, HttpStatus.ACCEPTED);
     }
 
