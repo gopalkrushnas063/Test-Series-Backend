@@ -30,9 +30,11 @@ public class ExamCardServiceImpl implements ExamRepositoryServices {
             throw new ExamCardExceptions("No any exam card record found");
         }
 
-        // Group exams by category
+        // Group exams by category, handling null categories
         Map<String, List<ExamsCard>> examsByCategory = allExamCards.stream()
-                .collect(Collectors.groupingBy(ExamsCard::getCategory));
+                .collect(Collectors.groupingBy(
+                        exam -> exam.getCategory() != null ? exam.getCategory() : "Uncategorized"
+                ));
 
         return examsByCategory;
     }
