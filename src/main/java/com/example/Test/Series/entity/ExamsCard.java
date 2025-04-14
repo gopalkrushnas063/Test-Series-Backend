@@ -1,6 +1,5 @@
 package com.example.Test.Series.entity;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,4 +19,5 @@ public class ExamsCard {
     private String icon;
     private String title;
     private String url;
+    private String category;
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -25,19 +26,19 @@ public class ExamCardController {
     }
 
     @GetMapping("/all_exam_card")
-    public ResponseEntity<List<ExamsCard>> getAllExamCardListHandler() throws ExamCardExceptions{
-        List<ExamsCard> examsCardList = examRepositoryServices.getAllExamCardList();
-        return new ResponseEntity<>(examsCardList,HttpStatus.OK);
+    public ResponseEntity<Map<String, List<ExamsCard>>> getAllExamCardListHandler() throws ExamCardExceptions {
+        Map<String, List<ExamsCard>> examsByCategory = examRepositoryServices.getAllExamCardsGroupedByCategory();
+        return new ResponseEntity<>(examsByCategory, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ExamsCard> updateExamCArdByIDHandler(@PathVariable("id") Integer id, ExamsCard examsCard) throws ExamCardExceptions {
-        ExamsCard examsCard1 = examRepositoryServices.updateExamCardByID(id,examsCard);
-        return new ResponseEntity<>(examsCard, HttpStatus.OK);
+    public ResponseEntity<ExamsCard> updateExamCardByIDHandler(@PathVariable("id") Integer id, @RequestBody ExamsCard examsCard) throws ExamCardExceptions {
+        ExamsCard updatedExamCard = examRepositoryServices.updateExamCardByID(id, examsCard);
+        return new ResponseEntity<>(updatedExamCard, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteExamCardByIDHandler(@PathVariable("id") Integer id) throws ExamCardExceptions{
+    public ResponseEntity<String> deleteExamCardByIDHandler(@PathVariable("id") Integer id) throws ExamCardExceptions {
         String res = examRepositoryServices.deleteExamCardByID(id);
         return new ResponseEntity<>(res, HttpStatus.OK);
     }

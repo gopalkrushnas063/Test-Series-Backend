@@ -7,15 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 @Service
-public class ExamCardServiceImpl implements ExamRepositoryServices{
+public class ExamCardServiceImpl implements ExamRepositoryServices {
 
     @Autowired
     private ExamCardRepository examCardRepository;
-
 
     @Override
     public ExamsCard addExamCard(ExamsCard examsCard) throws ExamCardExceptions {
@@ -23,23 +23,35 @@ public class ExamCardServiceImpl implements ExamRepositoryServices{
     }
 
     @Override
-    public List<ExamsCard> getAllExamCardList() throws ExamCardExceptions {
+    public Map<String, List<ExamsCard>> getAllExamCardsGroupedByCategory() throws ExamCardExceptions {
         List<ExamsCard> allExamCards = examCardRepository.findAll();
 
-        if(allExamCards.isEmpty()){
-            throw new ExamCardExceptions("No any exam card record founds");
+        if(allExamCards.isEmpty()) {
+            throw new ExamCardExceptions("No any exam card record found");
         }
-        return allExamCards;
+
+        // Group exams by category
+        Map<String, List<ExamsCard>> examsByCategory = allExamCards.stream()
+                .collect(Collectors.groupingBy(ExamsCard::getCategory));
+
+        return examsByCategory;
     }
 
     @Override
     public ExamsCard updateExamCardByID(Integer id, ExamsCard examsCard) throws ExamCardExceptions {
-        ExamsCard examsCard1 = examCardRepository.findById(id).get();
-        examsCard1.setIcon(examsCard1.getIcon());
-        examsCard1.setTitle(examsCard.getTitle());
-        examsCard1.setUrl(examsCard.getUrl());
+        Optional<ExamsCard> optionalExamCard = examCardRepository.findById(id);
 
-        return examCardRepository.save(examsCard);
+        if(optionalExamCard.isEmpty()) {
+            throw new ExamCardExceptions("Exam Card not found with ID: " + id);
+        }
+
+        ExamsCard existingExamCard = optionalExamCard.get();
+        existingExamCard.setIcon(examsCard.getIcon());
+        existingExamCard.setTitle(examsCard.getTitle());
+        existingExamCard.setUrl(examsCard.getUrl());
+        existingExamCard.setCategory(examsCard.getCategory());
+
+        return examCardRepository.save(existingExamCard);
     }
 
     @Override
@@ -50,9 +62,6 @@ public class ExamCardServiceImpl implements ExamRepositoryServices{
             examCardRepository.deleteById(id);
             return "Exam Card Data Deleted Successfully";
         }
-        throw new ExamCardExceptions("Exam Card does not exist with ExamCard ID : "+id);
-
+        throw new ExamCardExceptions("Exam Card does not exist with ExamCard ID: " + id);
     }
-
-
 }
