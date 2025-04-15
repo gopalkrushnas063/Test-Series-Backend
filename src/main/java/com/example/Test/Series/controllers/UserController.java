@@ -107,7 +107,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/by-email/{email}")
     public ResponseEntity<User> getUserByEmailHandler(@PathVariable String email) {
         try {
             User user = userServices.getUserByEmail(email);
