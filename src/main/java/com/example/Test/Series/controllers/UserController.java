@@ -84,4 +84,26 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<String> deleteUserHandler(@PathVariable Integer userId) {
+        try {
+            String message = userServices.deleteUser(userId);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } catch (UserException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> updateUserHandler(
+            @PathVariable Integer userId,
+            @RequestBody User updatedUser) {
+        try {
+            User updatedUserDetails = userServices.updateUserDetails(userId, updatedUser);
+            return new ResponseEntity<>(updatedUserDetails, HttpStatus.OK);
+        } catch (UserException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

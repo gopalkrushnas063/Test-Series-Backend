@@ -110,4 +110,45 @@ public class UserServiceImpl implements UserServices{
         return "Password reset successfully";
     }
 
+    @Override
+    public String deleteUser(Integer userId) throws UserException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException("User not found with ID: " + userId));
+
+        userRepository.delete(user);
+        return "User deleted successfully with ID: " + userId;
+    }
+
+    @Override
+    public User updateUserDetails(Integer userId, User updatedUser) throws UserException {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException("User not found with ID: " + userId));
+
+        // Validate email if it's being changed
+        if (updatedUser.getEmail() != null && !updatedUser.getEmail().equals(existingUser.getEmail())) {
+            if (emailExists(updatedUser.getEmail())) {
+                throw new UserException("Email already exists");
+            }
+            existingUser.setEmail(updatedUser.getEmail());
+        }
+
+        // Validate phone number if it's being changed
+        if (updatedUser.getPhoneNumber() != null && !updatedUser.getPhoneNumber().equals(existingUser.getPhoneNumber())) {
+            if (phoneNumberExists(updatedUser.getPhoneNumber())) {
+                throw new UserException("Phone number already exists");
+            }
+            existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+        }
+
+        // Update other fields if provided
+        if (updatedUser.getName() != null) {
+            existingUser.setName(updatedUser.getName());
+        }
+
+        // Note: Password updates should be handled via the changePassword method
+        // So we won't update password here even if provided
+
+        return userRepository.save(existingUser);
+    }
+
 }
