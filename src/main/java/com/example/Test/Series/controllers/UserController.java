@@ -52,6 +52,36 @@ public class UserController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserByIdHandler(@PathVariable Integer id) throws UserException {
+        User user = userServices.getUserById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePasswordHandler(
+            @RequestParam Integer userId,
+            @RequestParam String oldPassword,
+            @RequestParam String newPassword,
+            @RequestParam String confirmPassword) {
+        try {
+            String message = userServices.changePassword(userId, oldPassword, newPassword, confirmPassword);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } catch (UserException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPasswordHandler(
+            @RequestParam String email,
+            @RequestParam String newPassword,
+            @RequestParam String confirmPassword) {
+        try {
+            String message = userServices.forgotPassword(email, newPassword, confirmPassword);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } catch (UserException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

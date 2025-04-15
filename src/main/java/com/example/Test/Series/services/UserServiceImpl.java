@@ -60,4 +60,54 @@ public class UserServiceImpl implements UserServices{
         }
     }
 
+    @Override
+    public User getUserById(Integer id) throws UserException {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserException("User not found with ID: " + id));
+    }
+
+    @Override
+    public String changePassword(Integer userId, String oldPassword, String newPassword, String confirmPassword) throws UserException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException("User not found with ID: " + userId));
+
+        // Validate old password
+        if (!user.getPassword().equals(oldPassword)) {
+            throw new UserException("Old password is incorrect");
+        }
+
+        // Validate new password and confirm password match
+        if (!newPassword.equals(confirmPassword)) {
+            throw new UserException("New password and confirm password don't match");
+        }
+
+        // Validate new password is different from old password
+        if (newPassword.equals(oldPassword)) {
+            throw new UserException("New password must be different from old password");
+        }
+
+        // Update the password
+        user.setPassword(newPassword);
+        userRepository.save(user);
+
+        return "Password changed successfully";
+    }
+
+    @Override
+    public String forgotPassword(String email, String newPassword, String confirmPassword) throws UserException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException("User not found with email: " + email));
+
+        // Validate new password and confirm password match
+        if (!newPassword.equals(confirmPassword)) {
+            throw new UserException("New password and confirm password don't match");
+        }
+
+        // Update the password
+        user.setPassword(newPassword);
+        userRepository.save(user);
+
+        return "Password reset successfully";
+    }
+
 }
