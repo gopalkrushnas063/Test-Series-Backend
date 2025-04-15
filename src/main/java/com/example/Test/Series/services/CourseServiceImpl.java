@@ -25,7 +25,24 @@ public class CourseServiceImpl implements CourseService {
         if (category.getCategoryName() == null || category.getCategoryName().isEmpty()) {
             throw new CourseException("Category name cannot be empty");
         }
+
+        // Check if category already exists
+        CourseCategory existingCategory = categoryRepository.findByCategoryName(category.getCategoryName());
+        if (existingCategory != null) {
+            // Update existing category
+            existingCategory.setImageUrl(category.getImageUrl());
+            return categoryRepository.save(existingCategory);
+        }
+
+        // Save new category (without data first)
         return categoryRepository.save(category);
+    }
+
+    @Override
+    public CourseData addCourseToCategory(String categoryName, CourseData courseData) throws CourseException {
+        CourseCategory category = getCategoryByName(categoryName);
+        courseData.setCategory(category);
+        return dataRepository.save(courseData);
     }
 
     @Override
@@ -54,13 +71,6 @@ public class CourseServiceImpl implements CourseService {
             return "Category deleted successfully";
         }
         throw new CourseException("Category not found with id: " + id);
-    }
-
-    @Override
-    public CourseData addCourseToCategory(String categoryName, CourseData courseData) throws CourseException {
-        CourseCategory category = getCategoryByName(categoryName);
-        courseData.setCategory(category);
-        return dataRepository.save(courseData);
     }
 
     @Override

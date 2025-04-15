@@ -1,5 +1,6 @@
 package com.example.Test.Series.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,5 +26,7 @@ public class CourseData {
     private List<String> materials;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
+    @JsonBackReference // Add this to handle serialization
     private CourseCategory category;
 }

@@ -1,5 +1,6 @@
 package com.example.Test.Series.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,5 +21,6 @@ public class CourseCategory {
     private String imageUrl;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    @JsonIgnore // Add this to prevent infinite recursion
     private List<CourseData> data;
 }

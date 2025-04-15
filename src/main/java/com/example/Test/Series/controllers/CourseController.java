@@ -20,9 +20,28 @@ public class CourseController {
     private CourseService courseService;
 
     @PostMapping("/category")
-    public ResponseEntity<CourseCategory> createCategory(@RequestBody CourseCategory category) throws CourseException {
-        CourseCategory saved = courseService.createOrUpdateCategory(category);
-        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    public ResponseEntity<CourseCategory> createCategory(@RequestBody CourseCategory categoryRequest) throws CourseException {
+        // Create new category without the data first
+        CourseCategory category = new CourseCategory();
+        category.setCategoryName(categoryRequest.getCategoryName());
+        category.setImageUrl(categoryRequest.getImageUrl());
+
+        // Save the category first to get an ID
+        CourseCategory savedCategory = courseService.createOrUpdateCategory(category);
+
+        // If there's data, process it
+        if (categoryRequest.getData() != null && !categoryRequest.getData().isEmpty()) {
+            for (CourseData courseData : categoryRequest.getData()) {
+                // Set the category reference for each course data
+                courseData.setCategory(savedCategory);
+                // Save each course data
+                courseService.addCourseToCategory(savedCategory.getCategoryName(), courseData);
+            }
+        }
+
+        // Fetch the complete category with all data to return
+        CourseCategory completeCategory = courseService.getCategoryByName(savedCategory.getCategoryName());
+        return new ResponseEntity<>(completeCategory, HttpStatus.CREATED);
     }
 
     @GetMapping("/category/{name}")
