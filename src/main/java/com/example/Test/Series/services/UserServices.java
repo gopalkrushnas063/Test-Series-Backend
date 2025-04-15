@@ -14,4 +14,5 @@ public interface UserServices {
     String forgotPassword(String email, String newPassword, String confirmPassword) throws UserException;
     String deleteUser(Integer userId) throws UserException;
     User updateUserDetails(Integer userId, User updatedUser) throws UserException;
+    User getUserByEmail(String email) throws UserException;
 }

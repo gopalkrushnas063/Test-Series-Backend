@@ -151,4 +151,10 @@ public class UserServiceImpl implements UserServices{
         return userRepository.save(existingUser);
     }
 
+    @Override
+    public User getUserByEmail(String email) throws UserException {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException("User not found with email: " + email));
+    }
+
 }
