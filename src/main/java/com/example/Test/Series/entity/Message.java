@@ -19,7 +19,7 @@ public class Message {
     private Integer receiverId;
     private String content;
     private String messageType; // "TEXT", "IMAGE", "VIDEO"
-    private String fileUrl; // For media messages
+    private String fileUrl;
     private LocalDateTime timestamp;
     private Boolean isRead;
 }
