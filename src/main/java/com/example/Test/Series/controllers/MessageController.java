@@ -1,7 +1,5 @@
 package com.example.Test.Series.controllers;
 
-import com.example.Test.Series.entity.Message;
-import com.example.Test.Series.exceptions.MessageException;
 import com.example.Test.Series.repositories.Message.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
