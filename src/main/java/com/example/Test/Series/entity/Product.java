@@ -15,8 +15,10 @@ public class Product {
     private Long id;
     private String title;
     private Double price;
+    @Column(length = 1000)
     private String description;
     private String category;
+    @Column(length = 500)
     private String image;
 
     @Embedded
